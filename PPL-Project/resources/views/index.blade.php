@@ -8,6 +8,7 @@
 <body>
     <h1>Data Pertemuan 3</h1>
     
+    
     <table border="1">
         <thead>
             <tr>
@@ -17,6 +18,7 @@
                 <th>Status</th>
                 <th>Tanggal Terdaftar</th>
                 <th>Verifikasi</th>
+                <th>aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -28,10 +30,19 @@
                     <td>{{ $item->status }}</td>
                     <td>{{ $item->registered_at }}</td>
                     <td>{{ $item->is_verified ? 'Ya' : 'Tidak' }}</td>
+                    <td>
+                        <a href="{{route('edit', $item->id)}}">edit</a>
+                            <form action="{{ route('destroy', $item->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button>hapus</button>
+                            </form>
+            </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    <a href="{{ route('pertemuan3.create') }}">Tambah</a>
     
 </body>
 </html>

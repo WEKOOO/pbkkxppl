@@ -28,3 +28,8 @@ use App\Http\Controllers\Pertemuan3Controller;
 Route::get('/pertemuan3', [Pertemuan3Controller::class, 'index']);
 Route::get('/pertemuan3/create', [Pertemuan3Controller::class, 'create'])->name('pertemuan3.create');
 Route::post('/pertemuan3', [Pertemuan3Controller::class, 'store'])->name('pertemuan3.store');
+
+
+Route::get("/pertemuan3/{pertemuan3}", [Pertemuan3Controller::class, "edit"])->name("edit");
+Route::put("/pertemuan3/{pertemuan3}", [Pertemuan3Controller::class,"update"])->name("update");
+Route::delete('/pertemuan3/{pertemuan3}', [Pertemuan3Controller::class, 'destroy'])->name('destroy');
