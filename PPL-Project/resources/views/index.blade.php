@@ -18,7 +18,9 @@
                 <th>Status</th>
                 <th>Tanggal Terdaftar</th>
                 <th>Verifikasi</th>
+                <th>Kategori</th>
                 <th>aksi</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -30,6 +32,7 @@
                     <td>{{ $item->status }}</td>
                     <td>{{ $item->registered_at }}</td>
                     <td>{{ $item->is_verified ? 'Ya' : 'Tidak' }}</td>
+                    <td>{{ $item->category ? $item->category->name : 'Tidak ada kategori' }}</td>
                     <td>
                         <a href="{{route('edit', $item->id)}}">edit</a>
                             <form action="{{ route('destroy', $item->id) }}" method="POST">
@@ -37,7 +40,8 @@
                                 @method('DELETE')
                                 <button>hapus</button>
                             </form>
-            </td>
+                    </td>
+                    
                 </tr>
             @endforeach
         </tbody>

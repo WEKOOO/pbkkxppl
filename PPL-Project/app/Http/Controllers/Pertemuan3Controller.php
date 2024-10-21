@@ -3,53 +3,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pertemuan3; // pastikan modelnya sudah dibuat
+use App\Models\Pertemuan3;
+use App\Models\Category;
 
 class Pertemuan3Controller extends Controller
 {
     public function index()
     {
-        // Ambil semua data dari tabel pertemuan3_table
-        $data = Pertemuan3::all();
-        
-        // Kirim data ke view index
+        $data = Pertemuan3::with('category')->get();
         return view('index', compact('data'));
     }
 
-    // Method create untuk membuka form input data
     public function create()
     {
-        return view('create');
+        $categories = Category::all();
+        return view('create', compact('categories'));
     }
 
-    // Method store untuk menyimpan data input ke database
     public function store(Request $request)
     {
-        // Validasi input
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'umur' => 'required|integer',
             'status' => 'required|in:active,inactive',
             'registered_at' => 'required|date',
-            'is_verified' => 'required|boolean'
+            'is_verified' => 'required|boolean',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
-        // Simpan data ke tabel
-        Pertemuan3::create([
-            'nama' => $request->nama,
-            'umur' => $request->umur,
-            'status' => $request->status,
-            'registered_at' => $request->registered_at,
-            'is_verified' => $request->is_verified,
-        ]);
-        $data = Pertemuan3::all(); // Mengambil semua data dari tabel pertemuan3_table
-            return view('index', compact('data'));
+        Pertemuan3::create($validated);
 
-           
-
+        return redirect('/pertemuan3')->with('success', 'Data berhasil ditambahkan');
     }
-    public function edit(Pertemuan3 $pertemuan3){
-        return view("edit", ["pertemuan3" => $pertemuan3]);
+
+    public function edit(Pertemuan3 $pertemuan3)
+    {
+        $categories = Category::all();
+        return view('edit', compact('pertemuan3', 'categories'));
     }
 
     public function update(Request $request, Pertemuan3 $pertemuan3)
@@ -60,16 +50,18 @@ class Pertemuan3Controller extends Controller
             'status' => 'required|in:active,inactive',
             'registered_at' => 'required|date',
             'is_verified' => 'required|boolean',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         $pertemuan3->update($validated);
 
-        return redirect('/pertemuan3')->with('success', 'Data Berhasil Diubah');
+        return redirect('/pertemuan3')->with('success', 'Data berhasil diubah');
     }
 
-    public function destroy(Pertemuan3 $pertemuan3){
+    public function destroy(Pertemuan3 $pertemuan3)
+    {
         $pertemuan3->delete();
 
-        return redirect('/pertemuan3')->with('success', 'Data Berhasil Dihapus');
+        return redirect('/pertemuan3')->with('success', 'Data berhasil dihapus');
     }
 }

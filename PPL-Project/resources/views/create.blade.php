@@ -38,6 +38,14 @@
         <label for="is_verified">Verifikasi:</label>
         <input type="checkbox" id="is_verified" name="is_verified" value="1" {{ old('is_verified') ? 'checked' : '' }}><br>
 
+        <label for="category_id">Kategori:</label>
+        <select name="category_id" id="category_id">
+            <option value="">Pilih Kategori</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+
         <button type="submit">Submit</button>
     </form>
 </body>

@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Pertemuan3 extends Model
 {
     use HasFactory;
-    // Tentukan nama tabel secara eksplisit
+    
     protected $table = 'example';
 
-    // Tentukan kolom yang boleh diisi secara massal
-    protected $fillable = ['nama', 'umur', 'status', 'registered_at', 'is_verified'];
+    protected $fillable = ['nama', 'umur', 'status', 'registered_at', 'is_verified', 'category_id'];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
