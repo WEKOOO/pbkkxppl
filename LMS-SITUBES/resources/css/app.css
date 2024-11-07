@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+.prose {
+    max-width: none;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+    color: theme('colors.gray.900');
+}
+
+.dark .prose h1, 
+.dark .prose h2, 
+.dark .prose h3, 
+.dark .prose h4 {
+    color: theme('colors.gray.100');
+}
+
+.prose p {
+    color: theme('colors.gray.600');
+}
+
+.dark .prose p {
+    color: theme('colors.gray.400');
+}
+
+/* Add animation for hover effects */
+.transition-transform {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.hover\:scale-105:hover {
+    transform: scale(1.05);
+}
