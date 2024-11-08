@@ -99,7 +99,9 @@
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6">
                             <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                                Mulai Ujian
+                                <a href="{{ route('exam.show', $module->id) }}">
+                                    Mulai Ujian
+                                </a>
                             </button>
                         </div>
                     </div>

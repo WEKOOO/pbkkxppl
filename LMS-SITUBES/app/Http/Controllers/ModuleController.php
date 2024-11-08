@@ -15,6 +15,20 @@ class ModuleController extends Controller
 
     public function show(Module $module)
     {
-        return view('modules.show', compact('module'));
+        // Definisikan status dan warna status
+        $status = 'active'; // Ganti dengan logika untuk mendapatkan status yang sesuai
+        $statusColors = [
+            'active' => 'bg-green-500',
+            'inactive' => 'bg-red-500',
+            // Tambahkan status lainnya sesuai kebutuhan
+        ];
+        $statusText = [
+            'active' => 'Aktif',
+            'inactive' => 'Tidak Aktif',
+            // Tambahkan teks status lainnya sesuai kebutuhan
+        ];
+
+        return view('modules.show', compact('module', 'status', 'statusColors', 'statusText'));
     }
+
 }
