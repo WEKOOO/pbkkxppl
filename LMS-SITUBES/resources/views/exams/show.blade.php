@@ -18,7 +18,7 @@
                     <p class="text-gray-600 dark:text-gray-400 mb-6">
                         {{ $exam->description }}
                     </p>
-                    <form action="{{ route('exams.submit', ['exam' => 1]) }}" method="POST">
+                    <form action="{{ route('exams.submit', ['exam' => $exam]) }}" method="POST">
                         @csrf
                         <div class="space-y-6">
                             @if ($exam->questions)
