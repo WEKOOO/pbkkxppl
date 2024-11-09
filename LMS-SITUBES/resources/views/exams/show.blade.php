@@ -18,19 +18,21 @@
                     <p class="text-gray-600 dark:text-gray-400 mb-6">
                         {{ $exam->description }}
                     </p>
-
-                    <form action="{{ route('exams.submit', ['exam']) }}" method="POST">
+                    <form action="{{ route('exams.submit', ['exam' => 1]) }}" method="POST">
                         @csrf
                         <div class="space-y-6">
-                            @if($exam->questions)
-                                @foreach($exam->questions as $question)
+                            @if ($exam->questions)
+                                @foreach ($exam->questions as $question)
                                     <div>
-                                        <h4 class="font-semibold mb-2">{{ $question->question }} ({{ $question->points }} poin)</h4>
+                                        <h4 class="font-semibold mb-2">{{ $question->question }}
+                                            ({{ $question->points }} poin)
+                                        </h4>
                                         <ul class="space-y-2">
-                                            @foreach($question->choices as $choice)
+                                            @foreach ($question->choices as $choice)
                                                 <li>
                                                     <label class="flex items-center">
-                                                        <input type="radio" name="question-{{ $question->id }}" value="{{ $choice->id }}" class="mr-2">
+                                                        <input type="radio" name="question-{{ $question->id }}"
+                                                            value="{{ $choice->id }}" class="mr-2">
                                                         {{ $choice->choice }}
                                                     </label>
                                                 </li>

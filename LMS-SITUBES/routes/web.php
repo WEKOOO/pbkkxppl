@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/modules', [ModuleController::class, 'index'])->name('modules.index');
     Route::get('/modules/{module}', [ModuleController::class, 'show'])->name('modules.show');
-    
+
     Route::get('/exams/{exam}', [ExamController::class, 'show'])->name('exams.show');
     Route::get('/exam/{module}', [ExamController::class, 'show'])->name('exam.show');
     Route::post('/exams/{exam}/submit', [ExamController::class, 'submit'])->name('exams.submit');
