@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Storage;
+use App\Services\StorageService;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -25,32 +26,38 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-
-    public function update(ProfileUpdateRequest $request)
+    public function update(ProfileUpdateRequest $request, StorageService $storageService)
     {
         $user = $request->user();
 
+        $user->fill($request->validated());
+
         if ($request->hasFile('profile_photo')) {
-            // Hapus foto lama jika ada
-            if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
-                Storage::disk('public')->delete($user->profile_photo);
-            }
-            
-            // Upload foto baru
-            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            // Create a custom name using user ID and current timestamp
+            $customName = 'profile_' . $user->id . '_' . Str::slug($user->name) . '_' . time();
+
+            // Use StorageService to update the profile photo with a custom name
+            $path = $storageService->updateFile(
+                $request->file('profile_photo'), // Uploaded file instance
+                'profile-photos',                // Directory in storage
+                $user->profile_photo,            // Existing path (if any) for deletion
+                $customName                      // Custom file name
+            );
+
+            // Save the new path to the user's profile_photo field
             $user->profile_photo = $path;
         }
-    
 
+        // Handle other updates and save to the database
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        $user->fill($request->validated());
         $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
+
 
     /**
      * Delete the user's account.
