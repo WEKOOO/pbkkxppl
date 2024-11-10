@@ -22,6 +22,7 @@
                         @php
                             $progress = $module->progress->where('user_id', auth()->id())->first();
                             $status = $progress ? $progress->status : 'not_started';
+                            $status = $progress ? $progress->status : 'not_started';
                             $statusColors = [
                                 'not_started' => 'bg-gray-500',
                                 'in_progress' => 'bg-yellow-500',
@@ -52,10 +53,10 @@
                         <div class="mb-4">
                             <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
                                 <span>Progress</span>
-                                <span>{{ $progress ? '75%' : '0%' }}</span>
+                                <span>{{ $progress ? '75%' : '25%' }}</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $progress ? '75%' : '0%' }}"></div>
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $progress ? '75%' : '25%' }}"></div>
                             </div>
                         </div>
 

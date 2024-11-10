@@ -15,17 +15,17 @@ class ModuleController extends Controller
 
     public function show(Module $module)
     {
-        // Definisikan status dan warna status
-        $status = 'active'; // Ganti dengan logika untuk mendapatkan status yang sesuai
+        // Definisikan status dan warna
+        $status = 'success'; // Contoh status, bisa disesuaikan dengan logika Anda
         $statusColors = [
-            'active' => 'bg-green-500',
-            'inactive' => 'bg-red-500',
-            // Tambahkan status lainnya sesuai kebutuhan
+            'success' => 'bg-green-500',
+            'error' => 'bg-red-500',
+            'warning' => 'bg-yellow-500',
         ];
         $statusText = [
-            'active' => 'Aktif',
-            'inactive' => 'Tidak Aktif',
-            // Tambahkan teks status lainnya sesuai kebutuhan
+            'success' => 'Berhasil',
+            'error' => 'Gagal',
+            'warning' => 'Peringatan',
         ];
 
         return view('modules.show', compact('module', 'status', 'statusColors', 'statusText'));

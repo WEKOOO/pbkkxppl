@@ -9,20 +9,39 @@
         </p>
     </header>
 
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-        @csrf
-    </form>
-
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
+        <!-- Profile Photo -->
+        <div>
+            @if(auth()->user()->profile_photo)
+                <img src="{{ asset('storage/profile-photos/' . auth()->user()->profile_photo) }}" 
+                     alt="Profile Photo" 
+                     class="w-48 h-48 object-cover mb-4">
+            @else
+                <div class="w-48 h-48 bg-gray-200 flex items-center justify-center mb-4">
+                    <span class="text-gray-500 text-4xl">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                </div>
+            @endif
+            
+            <x-input-label for="profile_photo" :value="__('Profile Photo')" />
+            <x-text-input id="profile_photo" 
+                         type="file" 
+                         class="mt-1 block w-full" 
+                         name="profile_photo" 
+                         accept="image/*"/>
+            <x-input-error class="mt-2" :messages="$errors->get('profile_photo')" />
+        </div>
+
+        <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+        <!-- Email -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />

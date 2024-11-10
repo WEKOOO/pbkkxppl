@@ -3,43 +3,57 @@
 namespace App\Http\Controllers;
 use App\Models\Exam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
 {
-    public function show(Exam $exam)
+    public function show($moduleId)
     {
+        // Ambil soal berdasarkan moduleId
+        $soal = [
+            ['id' => 1, 'pertanyaan' => 'Apa warna langit?', 'jawaban' => 'Biru'],
+            ['id' => 2, 'pertanyaan' => 'Apa ibukota Indonesia?', 'jawaban' => 'Jakarta'],
+            // Tambahkan soal lainnya
+        ];
         
-        return view('exams.show', compact('exam'));
-
+        return view('exams.show', compact('soal', 'moduleId'));
     }
-    
 
-    public function submit(Request $request, Exam $exam)
+    public function submit(Request $request)
     {
-        // Ambil semua jawaban dari request
-        $answers = $request->except('_token');
+        $jawabanBenar = 0;
+        $jawabanSalah = 0;
 
-        $totalPoints = 0;
-        $correctAnswers = [];
-        $wrongAnswers = [];
+        // Validasi input
+        $request->validate([
+            'jawaban.*' => 'required|string',
+        ]);
 
-        foreach ($exam->questions as $question) {
-            $correctChoice = $question->correct_choice_id; // Misalkan ini adalah ID pilihan yang benar
+        // Asumsikan kita punya soal dengan jawaban yang benar
+        $soal = [
+            ['id' => 1, 'jawaban' => 'Biru'],
+            ['id' => 2, 'jawaban' => 'Jakarta'],
+            // Tambahkan soal lainnya
+        ];
 
-            if (isset($answers['question-' . $question->id]) && $answers['question-' . $question->id] == $correctChoice) {
-                $totalPoints += $question->points; // Tambahkan poin jika jawaban benar
-                $correctAnswers[] = $question->id; // Simpan ID pertanyaan yang benar
+        foreach ($soal as $item) {
+            if ($request->input('jawaban.' . $item['id']) == $item['jawaban']) {
+                $jawabanBenar++;
             } else {
-                $wrongAnswers[] = $question->id; // Simpan ID pertanyaan yang salah
+                $jawabanSalah++;
             }
         }
 
-        // Simpan hasil ke dalam sesi atau database
-        session()->flash('totalPoints', $totalPoints);
-        session()->flash('correctAnswers', $correctAnswers);
-        session()->flash('wrongAnswers', $wrongAnswers);
+        // Simpan hasil ke session untuk flash message jika diperlukan
+        session()->flash('hasil', [
+            'benar' => $jawabanBenar,
+            'salah' => $jawabanSalah
+        ]);
 
-        // Redirect ke halaman hasil
-        return redirect()->route('exams.results', ['exam' => $exam]);
+        return view('exams.result', [
+            'jawabanBenar' => $jawabanBenar,
+            'jawabanSalah' => $jawabanSalah,
+            'moduleId' => $request->moduleId // Pastikan moduleId dikirim dari form
+        ]);
     }
 }
